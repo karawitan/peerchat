@@ -1,3 +1,13 @@
+
+GIT_TAG=$(shell git describe --tags)
+
+default: chat
+
+chat: build-docker
+	docker run -it \
+	peerchat:$(GIT_TAG) \
+	/usr/local/go/bin/go run . -discover announce -user $${USER:-c_quoi_ton_username} -room gourouland 
+
 help:
 	@echo "PeerChat Makefile (Requires Go v1.16+)"
 	@echo "'help' - Displays the command usage"
@@ -7,6 +17,7 @@ help:
 	@echo "'build-darwin' - Builds the application for MacOSX platforms"
 	@echo "'build-linux' - Builds the application for Linux platforms"
 	@echo "'build-all' - Builds the application for all platforms"
+	@echo "'build-docker' - Builds the application as a container"
 
 build:
 	@echo Compiling PeerChat
@@ -41,3 +52,6 @@ build-linux:
 build-all: build-windows build-darwin build-linux
 	@echo Cross Compiled PeerChat for all platforms
 
+
+build-docker:
+	docker build -t peerchat:$(GIT_TAG) .
