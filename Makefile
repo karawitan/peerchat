@@ -1,5 +1,5 @@
 
-GIT_TAG=$(shell git describe --tags)
+GIT_TAG=$(shell git fetch --tags ; git describe --tags)
 
 default: chat
 
